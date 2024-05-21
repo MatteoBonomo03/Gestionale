@@ -30,7 +30,7 @@ struct matrici {
     string prodotti[8] = {"tabella", "codice", "descriz", "quantita", "prezunit", "aliq", "categoria", "id"};
     string vendite[9] = {"tabella", "codice", "quantven", "nomeimp", "data", "ora", "cliente", "status", "id"};
     string clienti[10] = {"tabella", "nome", "piva", "paese", "citt", "indir", "civix", "tel", "email", "id"};
-    string utenti[6] = {"tabella", "username", "password", "nome", "cogn", "id"}; //, "admin"
+    string utenti[6] = {"tabella", "username", "password", "nome", "cogn", "id"};
     string log[4] = {"user", "pass"};
     string primari[2] = {"azione", "token"};
     string chiaviPrim[4] = {"state", "aliq", "stato", "categoria"};
@@ -140,7 +140,7 @@ bool controlloCredenziali(string* pARR) {
 
     while (sqlite3_step(stmt) != SQLITE_DONE) {
         
-        string utente = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));    //Da const unsigned char* a strngS
+        string utente = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
         string passw = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
         if (*(pARR + 0) == utente && *(pARR + 1) == passw) {
             sqlite3_reset(stmt);    //Per precauzione
@@ -171,8 +171,6 @@ bool autentTokenSingolo(string& buff2, int (&sessione)[300], string* pARR, matri
 //La struttura static int è obbligatoria (libreria sqlite)
 static int modElog(void* data, int numeroAttributi, char** valori, char** colonne) {  //viene chiamata ad ogni istanza del DB
     matrici *mat = (matrici *)data;
-
-    //string SM;
 
     for (int i = 1; i < numeroAttributi; i++) {
         if (valori[i] != mat->risultato[i]) {
