@@ -343,7 +343,6 @@ int main() {
                                     leggiUniversale(buff2, &mat, 7, &mat.prodotti[0]);
                                     nAttr = 7;
                                     poli = true;
-                                    //mat.guidaInser = "(id, codice, descriz, prezunit, quantita, aliq, categoria)";
                                     mat.guidaInser = "(id, codice, descriz, quantita, prezunit, aliq, categoria)";
                                     break;
                                 }
