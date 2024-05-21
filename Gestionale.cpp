@@ -8,7 +8,6 @@
 #include <sstream>
 #include "lib/sqlite3.h"
 #include "lib/json.hpp"
-//threads
 #include<cstdlib>
 
 using namespace std;
