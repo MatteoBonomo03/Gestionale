@@ -1,0 +1,1195 @@
+HTTP/1.1 200 OK
+Content-Type: text/html
+charset=utf-8
+Connection: close
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title id="titolo"></title>
+	<style type="text/css">
+
+		* {
+    	font-family: sans-serif;
+    	--tema-principale: #111827;
+		}
+		.sidenav {
+		  height: 100%;
+		  width: 170px;
+		  position: fixed;
+		  top: 0;
+		  left: 0;
+		  background-color: var(--tema-principale);
+		  padding-top: 20px;
+		  border-right: 4px solid #111827;
+		}
+
+		.sidenav a {
+		  padding: 6px 6px 6px 32px;
+		  text-decoration: none;
+		  font-size: 25px;
+		  display: block;
+		  font-family: sans-serif;
+		  font-weight: bold;
+		  color: white;
+		}
+
+		.sidenav a:hover {
+		  background-color: #f1f1f1;
+		  color: #111827;
+		}
+
+		.tabella1-1 {
+		    border-collapse: collapse;
+		    margin: 25px 0;
+		    font-size: 0.9em;
+		    min-width: 400px;
+		    overflow: hidden;
+		    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+		}
+
+		.tabella1-1 th,
+		.tabella1-1 td {
+		    padding: 12px 15px;
+		}
+
+		.tabella1-1 tbody tr {
+		    border-bottom: 1px solid #dddddd;
+		}
+
+		.tabella1-1 tbody tr:nth-of-type(even) {
+		    background-color: #f3f3f3;
+		}
+
+		.tabella1-1 tbody tr:last-of-type {
+		    border-bottom: 2px solid #096793;
+		}
+
+		.tabella1-1 tbody tr.active-row {
+		    font-weight: bold;
+		    color: #009879;
+		}
+
+
+		.mod {
+			--colore-generale: #096793;
+			--colore-bott-mod: #096793;
+		}
+
+		.log {
+		    background-color: var(--colore-generale);
+		    color: #ffffff;
+		    font-weight: bold;
+		    padding: 12px 15px;
+	    	border-top: 2px solid #096793;
+			background-color: #f3f3f3;
+		    border-bottom: 2px solid #096793;
+		    font-weight: bold;
+		    color: #009879;
+		}
+
+		.log {
+			width: 400px;
+		    max-width: 400px;
+		    margin: 1rem;
+		    padding: 2rem;
+		    box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+		    background: #ffffff;
+		}
+
+		.log h1 {
+			font-weight: bold;
+			margin-bottom: 2rem;
+	    	text-align: center;
+	    	color: black;
+		}
+
+		.log label {
+			color: black;
+		}
+
+		.log button {
+			width: 20;
+			color: white;
+		    padding: 1rem 2rem;
+		    font-weight: bold;
+		    font-size: 1.1rem;
+		    border: 2px solid #096793;
+		    border-radius: 4px;
+		    outline: none;
+		    cursor: pointer;
+		    background: #096793;
+		}
+
+		
+		input {
+		    padding: 0.75rem;
+		    border-radius: 4px;
+		    border: 1px solid #dddddd;
+		    outline: none;
+		    background: #eeeeee;
+		}
+
+		.log button:hover {
+    	background: #0967DA;
+		}
+
+		.log button:active {
+    		transform: scale(0.98);
+		}
+
+		.inser {
+			color: white;
+		    padding: 0.5rem 1rem;
+		    font-weight: bold;
+		    font-size: 1.1rem;
+		    border: 2px solid #096793;
+		    border-radius: 4px;
+		    outline: none;
+		    cursor: pointer;
+		    background-color: #096793;
+		}
+
+		.mod {
+			color: var(--colore-bott-mod);
+		    padding: 0.5rem 1rem;
+		    font-weight: bold;
+		    font-size: 1.1rem;
+		    border: 2px solid var(--colore-bott-mod);
+		    border-radius: 4px;
+		    outline: none;
+		    cursor: pointer;
+		    background-color: white;
+		}
+
+			.elim {
+			color: white;
+			background-color: #AA0503;
+		    padding: 0.5rem 1rem;
+		    font-weight: bold;
+		    font-size: 1.1rem;
+		    border: 2px solid #AA0503;
+		    border-radius: 4px;
+		    outline: none;
+		    cursor: pointer;
+		}
+
+		select {
+		   background: #eeeeee;
+		   padding:10px 0px 20px 0px;
+		   border:1px solid #eeeeee;
+		   border-radius:4px;
+		}
+
+		option {
+		  text-align: center;
+		  position: relative;
+		  cursor: pointer;
+		  background-color: #eeeeee;
+		}
+
+		h3 {
+			color: white;
+		}
+
+		.rim {
+			width: 40px;
+		}
+
+	</style>
+	<script type="text/javascript">
+		var url = document.URL + ":8080";
+		let token = 0;
+		var rispostaServer = {};
+		let imp;
+		let usr;
+	</script>
+</head>
+<body>
+	<center>
+		<div id="principale">
+
+		</div>
+	</center>
+	<div id="dedicatoArch">
+
+	</div>
+
+</body>
+<script type="text/javascript">
+	var formLogin = `
+	<div class="log">
+			<h1 id="titolo">Effettua l'accesso</h1>
+			<form id="login">
+		        <label for="user">
+		          Username:
+		          </label>
+		        <input type="text" id="user" name="user" onkeydown="if(event.keyCode == 13) {convalidaLog()}" value=""><br><br>
+		        <label for="pass">
+		          Password:
+		          </label>
+								<input type="password" id="pass" 
+		               name="pass" onkeydown="if(event.keyCode == 13) {convalidaLog()}"><br><br>
+		        <center><button type="button" onclick="convalidaLog()">Entra</button></center>
+		    </form>
+		    </div>`;
+
+		var menu = `
+			<body>
+			<h1 id="titDash"></h1>
+			<div class="sidenav">
+			<h3 id="U"></h3>
+			<a href="#" onclick="caricaHome()">Home</a>
+			  <a href="#" onclick="caricaInser()">Inserisci</a>
+			  <a href="#" onclick="arch()">Archivio</a><br><br>
+			  <a href="#" onclick="logout()">Esci</a>
+			</div>
+			<div id="varia">
+
+</div>
+<div id="null"></div>
+</body>`;
+
+	function esisteToken() {
+		if (token === 0) {
+			testoDinamico("principale", formLogin);
+			testoDinamico("titolo", "Login");
+		}
+	}
+
+	var variazione;
+	var testo;
+	var impiegato;
+
+	var scelta = `<h1 id="null">Inserisci</h1>
+	<form id="inserisci" onSubmit="return false;">
+		  	<select name="tabella" id="tabella" onchange="cambiaSelezione()">
+		  		<option value="prodotti">Prodotti</option>
+					<option value="vendite">Vendite</option>
+			    <option value="clienti">Clienti</option>
+			    <option value="categorie">Categorie</option>
+			    <option value="paesi">Paesi</option>
+			    <option value="aliquote">aliquote</option>
+			    <option value="status">status</option>
+			    <option value="utenti">Utenti</option>
+			</select><br><br>
+    	<div id="inserimento">
+
+    	</div><br><br>
+    	<center><button type="button" class="inser" onclick="invio('inserisci', '1')">Invia</button></center></form>
+    	<br><br>`;
+
+	var prodotti = `<div id="contenInseri">
+		<label for="codice">Codice:</label>
+		<input type="text" id="codice" name="codice" required><br><br>
+		<label for="descriz">Descrizione:</label>
+		<input type="textarea" id="descriz" name="descriz" max="255"><br><br>
+		<label for="categoria">Categoria:</label>
+		<select id="categoria" name="categoria"></select><br><br>
+		<label for="quantita">Quantità:</label>
+		<input type="number" id="quantita" name="quantita" required><br><br>
+		<label for="prezunit">Prezzo unitario:</label>
+		<input type="number" id="prezunit" name="prezunit" step="any" required><br><br>
+		<label for="aliq">Aliquota IVA:</label>
+		<select id="aliq" name="aliq"></select><br><br></div>`;
+
+		var singole = `
+		<input type="text" id="valore" onkeydown="if(event.keyCode == 13) {invio('inserisci, '1')}" name="valore" required><br><br>`;
+
+		var vendite = `<label for="codice">Codice:</label>
+		<select id="codice" name="codice" onchange="calcolaRimast()"><option value="null"></option></select><div id="des"></div><br><br>
+		<label for="quantven">Quantità venduta:</label>
+		<input type="number" id="quantven" name="quantven"><br> Rimasti:<div id="calc"></div><br><br>
+		<label for="data">Data della vendita</label>
+		<input type="date" id="data" name="data" min="09:00" max="18:00" /><br><br>
+		<label for="ora">Ora della vendita</label>
+		<input type="time" id="ora" name="ora" min="09:00" max="18:00" /><br><br>
+		<label for="cliente">Cliente:</label>
+		<select id="cliente" name="cliente"></select><br><br>
+		<label for="status">Status:</label>
+		<select id="status" name="status"></select><br><br>`;
+
+		var utenti = `<label for="username">Nuovo username:</label>
+		<input type="text" id="username" name="username" required><br><br>
+		<label for="password">Nuova password:</label>
+		<input type="password" id="password" name="password" required><br><br>
+		<label for="nome">Nome:</label>
+		<input type="text" id="nome" name="nome" required><br><br>
+		<label for="cogn">Nuovo cognome:</label>
+		<input type="text" id="cogn" name="cogn" required><br><br>`;
+
+		var clienti = `<label for="nome">Nome cliente o ragione sociale:</label>
+		<input type="text" id="nome" name="nome" required><br><br>
+		<label for="piva">P. IVA / CF:</label>
+		<input type="text" id="piva" name="piva"><br><br>
+		<label for="paese">Paese:</label>
+		<select id="paese" name="paese"></select><br><br>
+		<label for="citt">Città</label>
+		<input type="text" id="citt" name="citt" required><br><br>
+		<label for="indir">Indirizzo</label>
+		<input type="text" id="indir" name="indir" required><br><br>
+		<label for="civix">Civico</label>
+		<input type="text" id="civix" name="civix" required><br><br>
+		<label for="tel">Telefono</label>
+		<input type="text" id="tel" name="tel" required><br><br>
+		<label for="email">E-mail:</label>
+		<input type="text" id="email" name="email"><br><br>`;
+
+		var home = `
+		<h2>Prodotti più venduti</h2>
+		<table class="tabella1-1">
+    <tr id="colonne" class="colonne">
+        <th>Codice</th>
+        <th>Quantità vedute</th>
+        <th>Ricavo</th>
+    </tr>
+
+    <tbody id="thome2">
+        
+    </tbody>
+    </table>
+		<table class="tabella1-1">
+		<h2>Ultime 5 vendite</h2>
+	    <tr id="colonne" class="colonne">
+        <th>Codice</th>
+        <th>Quantità vedute</th>
+        <th>Impiegato</th>
+        <th>Data</th>
+        <th>Ora</th>
+        <th>cliente</th>
+        <th>Status</th>
+        <th>Azioni</th>
+    </tr>
+
+    <tbody id="thome1">
+        
+    </tbody>
+    </table>
+		`;
+
+		var archivio = `
+	<form id="arch" onSubmit="return false;">
+		  	<select name="tabellaMod" id="menuArchivio" onchange="cambiaQuery('', null)">
+		  		<option value="prodotti">Prodotti</option>
+					<option value="vendite">Vendite</option>
+			    <option value="clienti">Clienti</option>
+			    <option value="categorie">Categorie</option>
+			    <option value="paesi">Paesi</option>
+			    <option value="aliquote">aliquote</option>
+			    <option value="status">status</option>
+			    <option value="utenti">Utenti</option>
+			</select><br><br>
+    	<div id="tab">
+    	<div id="filtri">
+    	
+    	</div>
+<table class="tabella1-1">
+	    <tr id="colonne" class="colonne">
+
+    </tr>
+
+    <tbody id="tacrch1">
+        
+    </tbody> </table>
+
+    	</div><br><br>
+    	</form>
+    	<br><br>`;
+
+	var mod = `<h1>Modifica</h1>
+	<form id="modifica" onSubmit="return false;">
+	<center>
+    	<div id="inserimento">
+
+    	</div><br><br>
+    	</center></form>
+    	<br><br>`;
+
+	function caricaInser() {
+		testoDinamico("titolo", "Inserimento");
+		testoDinamico('varia', scelta);
+		testoDinamico('inserimento', prodotti);
+		richiesteClient("aliquote ORDER BY aliq", "*", "4", 3, "aliq");
+		richiesteClient("categorie", "categoria", "4", 20, "categoria");
+	}
+
+	function caricaHome() {
+
+		testoDinamico("titolo", "Home");
+		testoDinamico('principale', menu);
+		richiesteClient(`utenti WHERE username = "${usr}"`, "nome", "4", 18, "U");
+		testoDinamico('varia', home);
+		richiesteClient("vendite ORDER BY id DESC", "*", "4", 2, "thome1");
+		richiesteClient("vendite, prodotti WHERE vendite.codice = prodotti.codice GROUP BY vendite.codice ORDER BY sum(quantven) DESC", "vendite.codice, sum(quantven) AS [QV], (sum(quantven) * prodotti.prezunit) AS [RIC]", "4", 8, "thome2");
+	}
+
+async function calcolaRimast() {
+	let val = null;
+	var riferim = document.getElementById("codice");
+	valoreSelez = riferim.options[riferim.selectedIndex].value;
+	var agg = await richiesteClient("prodotti WHERE codice = '"+valoreSelez+"' GROUP BY codice", "sum(quantita) AS [riman]", "4", 19, "null")
+			.then((obj) => obj)
+	val = agg[0].riman;
+	var agg1 = await richiesteClient("vendite WHERE codice = '"+valoreSelez+"' GROUP BY codice", "sum(quantven) AS [riman]", "4", 19, "null").then((obj) => obj)
+	
+	if(Object.keys(agg1).length !== 0) {
+		val -= agg1[0].riman;
+	}
+
+	
+	let mostra = `<input type="text" id="calcolo" class="rim" name="ignora" placeholder="${val}" readonly>`
+	document.getElementById("calc").innerHTML = mostra;
+}
+
+	function cercaProdottoCodice(indice) {
+		var cod = document.getElementById("cod1").value;
+		if (indice === 1) {
+			if (cod === "") {
+				richiesteClient("prodotti ORDER BY id DESC", "*", "4", 10, "tacrch1");
+			}
+			else{
+				richiesteClient("prodotti WHERE codice LIKE '"+ cod +"%' OR descriz LIKE '"+ cod +"%' OR categoria LIKE '"+ cod +"%' ORDER BY id DESC", "*", "4", 10, "tacrch1");
+			}
+		}
+		else if (indice === 2) {
+			if (cod === "") {
+				richiesteClient("vendite ORDER BY id DESC", "*", "4", 11, "tacrch1");
+			}
+			else{
+				richiesteClient("vendite WHERE codice LIKE '"+ cod +"%' OR data LIKE '"+ cod +"%' OR cliente LIKE '"+ cod +"%' OR status LIKE '"+ cod +"%' ORDER BY id DESC", "*", "4", 11, "tacrch1");
+			}
+		}
+		else if (indice === 3) {
+			if (cod === "") {
+				richiesteClient("clienti ORDER BY id DESC", "*", "4", 12, "tacrch1");
+			}
+			else{
+				richiesteClient("clienti WHERE piva LIKE '"+ cod +"%' ORDER BY id DESC", "*", "4", 12, "tacrch1");
+			}
+		}
+		else if (indice === 4) {
+			if (cod === "") {
+				richiesteClient("utenti ORDER BY id DESC", "*", "4", 17, "tacrch1");
+			}
+			else{
+				richiesteClient("utenti WHERE username LIKE '"+ cod +"%' ORDER BY id DESC", "*", "4", 17, "tacrch1");
+			}
+		}
+		else if (indice === -1) {
+			if (cod === "") {
+				richiesteClient("categorie", "rowid, categoria", "4", 13, "tacrch1");
+			}
+			else{
+				richiesteClient("categorie WHERE categoria LIKE '"+ cod +"%'", "*", "4", 13, "tacrch1");
+			}
+		}
+
+
+
+	}
+
+	var TA1 = `<table class="tabella1-1">
+	    <tr id="colonne" class="colonne">
+    </tr>
+
+    <tbody id="thome1">
+        
+    </tbody>`;
+
+	async	function cambiaQuery(valoreSelez, damod) {
+		testoDinamico("titolo", "Archivio");
+		var seleziona = document.getElementById("menuArchivio");
+    valoreSelez = seleziona.options[seleziona.selectedIndex].value;
+    if (damod !== valoreSelez && damod !== null) {
+    	valoreSelez = damod;
+    }
+
+		var fil = document.getElementById("filtri").innerHTML = "";
+
+		if (valoreSelez === "categorie") {
+			var fil = document.getElementById("filtri");
+			let ht = `<input type="text" id="cod1" onkeydown="if(event.keyCode == 13) {cercaProdottoCodice(-1)}"></input><button type="button" class="inser" onclick="cercaProdottoCodice(-1)">Cerca</button>`
+			fil.innerHTML = ht;			
+			let col = `
+			<th>Categorie</th>
+        <th>Azioni</th>`
+      testoDinamico("colonne", col);
+			richiesteClient("categorie", "rowid, categoria", "4", 13, "tacrch1");
+		}
+
+		else if (valoreSelez === "status") {
+			let col = `
+			<th>Status</th>
+        <th>Azioni</th>`
+      testoDinamico("colonne", col);
+			richiesteClient("status", "rowid, state", "4", 14, "tacrch1");
+		}
+		else if (valoreSelez === "paesi") {
+			let col = `
+			<th>Paesi</th>
+        <th>Azioni</th>`
+      testoDinamico("colonne", col);
+			richiesteClient("paesi", "rowid, stato", "4", 15, "tacrch1");
+		}
+		else if (valoreSelez === "aliquote") {
+			let col = `
+			<th>Aliquote</th>
+        <th>Azioni</th>`
+      testoDinamico("colonne", col);
+			richiesteClient("aliquote", "rowid, aliq", "4", 16, "tacrch1");
+		}
+		else	if (valoreSelez === "prodotti") {
+			var fil = document.getElementById("filtri");
+			let ht = `<input type="text" id="cod1" onkeydown="if(event.keyCode == 13) {cercaProdottoCodice(1)}" value="Codice/Descrizione/Categoria"></input><button type="button" class="inser" onclick="cercaProdottoCodice(1)">Cerca</button>`
+			fil.innerHTML = ht;
+			let col = `
+			<th>Codice</th>
+			<th>Descrizione</th>
+			<th>Prezzo unitario</th>
+			<th>Scorte iniziali</th>
+			<th>Categoria</th>
+        <th>Aliquota IVA</th>
+        <th>Azioni</th>`
+      testoDinamico("colonne", col);
+			richiesteClient("prodotti ORDER BY id DESC", "*", "4", 10, "tacrch1");
+		}
+		else	if (valoreSelez === "vendite") {
+			var fil = document.getElementById("filtri");
+				let ht = `<input type="text" id="cod1" onkeydown="if(event.keyCode == 13) {cercaProdottoCodice(2)}" value="Codice/Data/Cliente/Status"></input><button type="button" class="inser" onclick="cercaProdottoCodice(2)">Cerca</button>`
+				fil.innerHTML = ht;
+				let col = `<th>Codice</th>
+        <th>Quantità veduta</th>
+        <th>Impiegato</th>
+        <th>Data</th>
+        <th>Ora</th>
+        <th>Cliente</th>
+        <th>Status</th>
+        <th>Azioni</th>`
+      testoDinamico("colonne", col);
+			richiesteClient("vendite ORDER BY id DESC", "*", "4", 11, "tacrch1");
+		}
+		else	if (valoreSelez === "clienti") {
+			var fil = document.getElementById("filtri");
+			let ht = `<input type="text" id="cod1" onkeydown="if(event.keyCode == 13) {cercaProdottoCodice(3)}" value="P. IVA / CF"></input><button type="button" class="inser" onclick="cercaProdottoCodice(3)">Cerca</button>`
+			fil.innerHTML = ht;
+				let col = `
+			<th>Nome / ragione sociale</th>
+        <th>P. IVA / CF</th>
+        <th>Paese</th>
+        <th>Città</th>
+        <th>Indirizzo</th>
+        <th>Civico</th>
+        <th>Telefono</th>
+        <th>E-mail</th>
+        <th>Azioni</th>`
+      testoDinamico("colonne", col);
+			richiesteClient("clienti", "*", "4", 12, "tacrch1");
+		}
+		else	if (valoreSelez === "utenti") {
+			var fil = document.getElementById("filtri");
+			let ht = `<input type="text" id="cod1" onkeydown="if(event.keyCode == 13) {cercaProdottoCodice(4)}" value="Username"></input><button type="button" class="inser" onclick="cercaProdottoCodice(4)">Cerca</button>`
+			fil.innerHTML = ht;
+				let col = `
+			<th>Username</th>
+			<th>Password</th>
+			<th>Nome</th>
+			<th>Cognome</th>
+      <th>Azioni</th>`
+      testoDinamico("colonne", col);
+			richiesteClient("utenti", "*", "4", 17, "tacrch1");
+		}
+	}
+
+async	function modifica(id, az) {
+		testoDinamico("titolo", "Modifica");
+		testoDinamico('varia', mod);
+		if (az === 1) {
+			const agg = await richiesteClient("vendite WHERE id='" + id +"'", "*", "4", 19, "null")
+			.then((obj) => obj)
+		var modVendite = `<label for="codice">Codice:</label>
+		<select id="codice" name="codice"><option value="${agg[0].codice}" selected>${agg[0].codice}</option></select><br><br>
+		<label for="quantven">Quantità venduta:</label>
+		<input type="number" id="quantven" name="quantven" value="${agg[0].quantven}"><br><br>
+		<label for="data">Data della vendita</label>
+		<input type="date" id="data" name="data" min="09:00" max="18:00" value="${agg[0].data}" /><br><br>
+		<label for="ora">Ora della vendita</label>
+		<input type="time" id="ora" name="ora" min="09:00" max="18:00" value="${agg[0].ora}" /><br><br>
+		<label for="cliente">Cliente:</label>
+		<select id="cliente" name="cliente"><option value="${agg[0].cliente}" selected>${agg[0].cliente}</option></select><br><br>
+		<label for="status">Status:</label>
+		<select id="status" name="status"><option value="${agg[0].status}" selected>${agg[0].status}</option></select><br><br>
+		<button type="button" onclick="ritornoScher(2, 'vendite')" class="mod">Annulla</button><button type="button" onclick="invioMod('modifica', 'vendite', '${agg[0].id}', '', 2, 'vendite')" class="elim">Modifica</button>`;
+			testoDinamico('inserimento', modVendite)
+			richiesteClient("prodotti", "codice, descriz", "4", 5, "codice");
+			richiesteClient("clienti", "nome", "4", 7, "cliente");
+			richiesteClient("status", "state", "4", 4, "status");
+		}
+		else if (az === 2) {
+			const agg = await richiesteClient("prodotti WHERE id='" + id +"'", "*", "4", 19, "null")
+			.then((obj) => obj)
+			var modProdotti = `<label for="codice">Codice:</label>
+		<input type="text" id="codice" name="codice" value="${agg[0].codice}"><br><br>
+		<label for="descriz">Descrizione:</label>
+		<input type="textarea" id="descriz" name="descriz" max="255" value="${agg[0].descriz}"><br><br>
+		<label for="categoria">Categoria:</label>
+		<select id="categoria" name="categoria"><option value="${agg[0].categoria}" selected>${agg[0].categoria}</option></select><br><br>
+		<label for="prezunit">Quantità:</label>
+		<input type="number" id="quantita" name="quantita" value="${agg[0].quantita}"><br><br>
+		<label for="quantita">Prezzo unitario:</label>
+		<input type="number" id="prezunit" name="prezunit" step="any" value="${agg[0].prezunit}"><br><br>
+		<label for="aliq">Aliquota IVA:</label>
+		<select id="aliq" name="aliq"><option value="${agg[0].aliq}" selected>${agg[0].aliq}%</option></select><br><br></div>
+		<button type="button" onclick="ritornoScher(3, 'prodotti')" class="mod">Annulla</button><button type="button" onclick="invioMod('modifica', 'prodotti', '${agg[0].id}', '', 3, 'prodotti')" class="elim">Modifica</button>`;
+		testoDinamico('inserimento', modProdotti);
+		richiesteClient("aliquote ORDER BY aliq DESC", "aliq", "4", 3, "aliq");
+		richiesteClient("categorie", "categoria", "4", 20, "categoria");
+		}
+		else if (az === 3) {
+		const agg = await richiesteClient("clienti WHERE id='" + id +"'", "*", "4", 19, "null")
+			.then((obj) => obj)
+			var modClienti = `<label for="nome">Nome cliente o ragione sociale:</label>
+		<input type="text" id="nome" name="nome" value="${agg[0].nome}"><br><br>
+		<label for="piva">P. IVA / CF:</label>
+		<input type="text" id="piva" name="piva" value="${agg[0].piva}"><br><br>
+		<label for="paese">Paese:</label>
+		<select id="paese" name="paese"><option value="${agg[0].paese}" selected>${agg[0].paese}</option></select><br><br>
+		<label for="citt">Città</label>
+		<input type="text" id="citt" name="citt" value="${agg[0].citt}"><br><br>
+		<label for="indir">Indirizzo</label>
+		<input type="text" id="indir" name="indir" value="${agg[0].indir}"><br><br>
+		<label for="civix">Civico</label>
+		<input type="text" id="civix" name="civix" value="${agg[0].civix}"><br><br>
+		<label for="tel">Telefono</label>
+		<input type="text" id="tel" name="tel" value="${agg[0].tel}"><br><br>
+		<label for="email">E-mail:</label>
+		<input type="text" id="email" name="email" value="${agg[0].email}"> <br><br>
+		<button type="button" onclick="ritornoScher(4, 'clienti')" class="mod">Annulla</button><button type="button" onclick="invioMod('modifica', 'clienti', '${agg[0].id}', '', 4, 'clienti')" class="elim">Modifica</button>`;
+		testoDinamico('inserimento', modClienti);
+		richiesteClient("paesi", "stato", "4", 6, "paese");
+		}
+		else if (az === 4) {
+		const agg = await richiesteClient("categorie WHERE rowid='" + id +"'", "rowid, categoria", "4", 19, "null")
+			.then((obj) => obj)
+			console.log(agg);
+			var modCategorie = `<input type="text" id="valore" onkeydown="if(event.keyCode == 13) {invioMod('modifica', 'categorie', '', '${agg[0].rowid}', 5, 'categorie')}" name="valore" value="${agg[0].categoria}"><br><br>
+			<button type="button" onclick="ritornoScher(5, 'categorie')" class="mod">Annulla</button><button type="button" onclick="invioMod('modifica', 'categorie', '', '${agg[0].rowid}', 5, 'categorie')" class="elim">Modifica</button>`;
+			testoDinamico('inserimento', modCategorie);
+		}
+		else if (az === 5) {
+		const agg = await richiesteClient("paesi WHERE rowid='" + id +"'", "rowid, stato", "4", 19, "null")
+			.then((obj) => obj)
+			console.log(agg);
+			var modPaesi = `<input type="text" id="valore" onkeydown="if(event.keyCode == 13) {invioMod('modifica', 'paesi', '', '${agg[0].rowid}', 6, 'paesi')}" name="valore" value="${agg[0].stato}"><br><br>
+			<button type="button" onclick="ritornoScher(6, 'paesi')" class="mod">Annulla</button><button type="button" onclick="invioMod('modifica', 'paesi', '', '${agg[0].rowid}', 6, 'paesi')" class="elim">Modifica</button>`;
+			testoDinamico('inserimento', modPaesi);
+		}		
+		else if (az === 6) {
+		const agg = await richiesteClient("aliquote WHERE rowid='" + id +"'", "rowid, aliq", "4", 19, "null")
+			.then((obj) => obj)
+			console.log(agg);
+			var modAliq = `<input type="text" id="valore" onkeydown="if(event.keyCode == 13) {invioMod('modifica', 'paesi', '', '${agg[0].rowid}', 7, 'aliquote')}" name="valore" value="${agg[0].aliq}"><br><br>
+			<button type="button" onclick="ritornoScher(7, 'aliquote')" class="mod">Annulla</button><button type="button" onclick="invioMod('modifica', 'aliquote', '', '${agg[0].rowid}', 7, 'aliquote')" class="elim">Modifica</button>`;
+			testoDinamico('inserimento', modAliq);
+		}
+		else if (az === 7) {
+		const agg = await richiesteClient("status WHERE rowid='" + id +"'", "rowid, state", "4", 19, "null")
+			.then((obj) => obj)
+			console.log(agg);
+			var modStatus = `<input type="text" id="valore" onkeydown="if(event.keyCode == 13) {invioMod('modifica', 'status', '', '${agg[0].rowid}', 8, 'status')}" name="valore" value="${agg[0].state}"><br><br>
+			<button type="button" onclick="ritornoScher(8, 'status')" class="mod">Annulla</button><button type="button" onclick="invioMod('modifica', 'status', '', '${agg[0].rowid}', 8, 'status')" class="elim">Modifica</button>`;
+			testoDinamico('inserimento', modStatus);
+		}
+		else if (az === 8) {
+		const agg = await richiesteClient("utenti WHERE id='" + id +"'", "*", "4", 19, "null")
+			.then((obj) => obj)
+			console.log(agg);
+			var modUtenti = `<label for="username">Username:</label>
+		<input type="text" id="username" name="username" value="${agg[0].username}"><br><br>
+		<label for="password">Nuova password:</label>
+		<input type="password" id="password" name="password" value="${agg[0].password}"><br><br>
+		<label for="nome">Nome:</label>
+		<input type="text" id="nome" name="nome" value="${agg[0].nome}"><br><br>
+		<label for="cogn">Nuovo cognome:</label>
+		<input type="text" id="cogn" name="cogn" value="${agg[0].cogn}"><br><br>
+			<button type="button" onclick="ritornoScher(9, 'utenti')" class="mod">Annulla</button><button type="button" onclick="invioMod('modifica', 'utenti', '${agg[0].id}', '', 9, 'utenti')" class="elim">Modifica</button>`;
+			testoDinamico('inserimento', modUtenti);
+		}
+	}
+
+async	function convalidaLog() {
+	let dati = document.getElementById("login");
+	let datiJson = {};
+	for (let i = 0; i < dati.elements.length; i++) {
+  	let element = dati.elements[i];
+    if (element.type !== "submit") {
+        datiJson[element.name] = element.value;
+    }
+  }
+
+  datiJson.sec = 'INVIO';
+  datiJson.azione = "0";
+  datiJson.token = token.toString();
+  let datiPronti = JSON.stringify(datiJson);
+
+  const risposta = await fetch(url, {
+		method: 'POST',
+		    headers: {
+		      'Content-Type': 'application/json'
+		    },
+		    body: JSON.stringify(datiJson)
+	  })
+	    .then(async (response) => await response.json())
+	    .then((json) => json);
+
+	  usr = datiJson.user;
+  	console.log("USR: " + usr);
+
+		token = risposta.token;
+    if (token) {
+    	if (token !== 'err') {
+    		caricaHome();
+    	}
+    	else {
+    		alert('Credenziali errate');
+    	}
+    }
+	}
+
+	function arch() {
+		testoDinamico("titolo", "Archivio");
+		testoDinamico("varia", "")
+		testoDinamico("varia", archivio);
+		cambiaQuery("prodotti");
+		var fil = document.getElementById("filtri");
+		let ht = `<input type="text" id="cod1" onkeydown="if(event.keyCode == 13) {cercaProdottoCodice(1)}" value="Codice/Descrizione/Categoria"></input><button type="button" class="inser" onclick="cercaProdottoCodice(1)">Cerca</button>`
+		fil.innerHTML = ht;
+		let col = `
+			<th>Codice</th>
+			<th>Descrizione</th>
+			<th>Prezzo unitario</th>
+			<th>Scorte iniziali</th>
+			<th>Categoria</th>
+        <th>Aliquota IVA</th>
+        <th>Azioni</th>`
+      testoDinamico("colonne", col);
+      richiesteClient("prodotti ORDER BY id DESC", "*", "4", 10, "tacrch1");
+	}
+
+async	function invio(elemento) {
+		let dati = document.getElementById(elemento);
+		let datiJson = {};
+		for (let i = 0; i < dati.elements.length; i++) {
+    	let element = dati.elements[i];
+        if (element.type !== "submit") {
+            datiJson[element.name] = element.value;
+        }
+	    }
+	    datiJson.sec = 'INVIO';
+	    datiJson.azione = '1';
+	    datiJson.token = token.toString();
+	    datiJson.nomeimp = imp;
+	    let datiPronti = JSON.stringify(datiJson);
+
+	    const risposta = await  fetch(url, {
+				method: 'POST',
+				    headers: {
+				      'Content-Type': 'application/json'
+				    },
+				    body: JSON.stringify(datiJson)
+			  })
+			    .then(async (response) => await response.json())
+			    .then((json) => json);
+
+				let mssg = risposta.mssg;
+        if (mssg) {
+        	if (mssg !== 'err') {
+        		alert("Operazione completata");
+        	}
+        	else {
+        		alert("Errore durante l'esecuzione");
+        	}
+        }
+      }
+
+function ritornoScher(ritorno, damod) {
+	testoDinamico("varia", archivio);
+	console.log("RitosnoScher: "+ritorno + ", "+damod);
+  if (ritorno === 2) {
+  	cambiaQuery("vendite", damod);
+  	document.getElementById("menuArchivio").value = damod;
+  }
+   else if (ritorno === 3) {
+  	cambiaQuery("prodotti", damod);
+  	document.getElementById("menuArchivio").value = damod;
+  }
+   else if (ritorno === 4) {
+  	cambiaQuery("clienti", damod);
+  	document.getElementById("menuArchivio").value = damod;
+  }
+   else if (ritorno === 5) {
+  	cambiaQuery("categorie", damod);
+  	document.getElementById("menuArchivio").value = damod;
+  }
+   else if (ritorno === 6) {
+  	cambiaQuery("paesi", damod);
+  	document.getElementById("menuArchivio").value = damod;
+  }
+   else if (ritorno === 7) {
+  	cambiaQuery("aliquote", damod);
+  	document.getElementById("menuArchivio").value = damod;
+  }
+   else if (ritorno === 8) {
+  	cambiaQuery("status", damod);
+  	document.getElementById("menuArchivio").value = damod;
+  }
+   else if (ritorno === 9) {
+  	cambiaQuery("utenti", damod);
+  	document.getElementById("menuArchivio").value = damod;
+  }
+}
+
+  async function invioMod(elemento, tabella, id, rowid, ritorno, damod) {
+
+  	if (confirm("L'azione modificherà i dati, continuare?") !== true) {
+  		return false;
+  	}
+  		let dati = document.getElementById(elemento);
+			let datiJson = {};
+			for (let i = 0; i < dati.elements.length; i++) {
+	    	let element = dati.elements[i];
+        if (element.type !== "submit") {
+            datiJson[element.name] = element.value;
+        }
+	    }
+	    datiJson.sec = 'INVIO';
+	    datiJson.azione = '2';
+	    datiJson.tabella = tabella;
+	    datiJson.id = id;
+	    datiJson.rowid = rowid;
+	    datiJson.token = token.toString();
+	    datiJson.nomeimp = imp;	//Prendi in automatico
+	    let datiPronti = JSON.stringify(datiJson);
+
+	    const risposta = await  fetch(url, {
+				method: 'POST',
+				    headers: {
+				      'Content-Type': 'application/json'
+				    },
+				    body: JSON.stringify(datiJson)
+			  })
+			    .then(async (response) => await response.json())
+			    .then((json) => json);
+
+				let mssg = risposta.mssg;
+        if (mssg) {
+        	if (mssg !== 'err') {
+        		alert("Operazione completata");
+        		ritornoScher(ritorno, damod)
+        	}
+        	else {
+        		alert("Errore durante l'esecuzione");
+        	}
+        }
+  }
+
+	function testoDinamico(elem, variazione) {
+		document.getElementById(elem).innerHTML = variazione;
+	}
+
+
+async	function elimina(id, en, ritorno, damod) {
+	let conferma = "Sicuro di procedere all'eliminazione?";
+		if (confirm(conferma) == true) {
+					let daElim = {};
+					daElim.sec = 'INVIO';
+			    daElim.azione = '3';
+			    daElim.tabella = en;
+			    daElim.valore = id.toString();
+			    daElim.token = token.toString();
+				  let jsonData = JSON.stringify(daElim);
+
+			const risposta = await  fetch(url, {
+			 method: 'POST',
+			    headers: {
+			      'Content-Type': 'application/json'
+			    },
+			    body: JSON.stringify(daElim)
+		  })
+		    .then(async (response) => await response.json())
+		    .then((json) => json);
+
+		    if (risposta.mssg !== "err") {
+		    	alert("Operazione completata");
+		    	ritornoScher(ritorno, damod)
+		    }
+		    else {
+		    	alert("Errore durante l'esecuzione");
+		    }
+		}
+	}
+
+	async function richiesteClient(entit, chiaveun, opz, tabella, elemento) {
+		var t = document.getElementById(elemento);
+		var nuple
+
+		let arrayRefere = {};
+		arrayRefere.sec = 'INVIO';
+    arrayRefere.azione = opz;
+    arrayRefere.tabella = entit;
+    arrayRefere.valore = chiaveun;
+    arrayRefere.nomeimp = impiegato;
+    arrayRefere.token = token.toString();
+
+	  const risposta = await  fetch(url, {
+		 method: 'POST',
+		    headers: {
+		      'Content-Type': 'application/json'
+		    },
+		    body: JSON.stringify(arrayRefere)
+	  })
+	    .then(async (rispost) => await rispost.json())
+	    .then((json) => json);
+
+	  if (tabella === 1) {
+	  	t.innerHTML = "";
+			for (var i = 0; i < 3; i++){
+				nuple = `<tr>
+								<td>${risposta[i].codice}</td>
+								<td>${risposta[i].quantita}</td>
+								<td>${risposta[i].prezunit}€</td>
+								<td>${risposta[i].descriz}</td>
+								<td>${risposta[i].aliq}%</td>
+						  </tr>`
+				t.innerHTML += nuple;
+			}
+	  }
+		else if (tabella === 2) {
+			
+			t.innerHTML = "";
+
+
+			for (var i = 0; i < 5; i++){
+				nuple = `<tr>
+								<td>${risposta[i].codice}</td>
+								<td>${risposta[i].quantven}</td>
+								<td>${risposta[i].nomeimp}</td>
+								<td>${risposta[i].data}</td>
+								<td>${risposta[i].ora}</td>
+								<td>${risposta[i].cliente}</td>
+								<td>${risposta[i].status}</td>
+								<td><button type="button" value="${risposta[i].id}" id="modi" class="mod" onclick="modifica(${risposta[i].id}, 1, 'vendite')">Modifica</button><button value="${risposta[i].id}" id="elimi" class="elim" onclick="elimina(${risposta[i].id}, 'vendite', 3, 'vendite')" type="button">Elimina</button></td>
+						  </tr>`
+				t.innerHTML += nuple;
+			}
+		}
+
+		else if (tabella === 3) {
+			for (var i = 0; i < risposta.length; i++){
+				nuple = `<option value="${risposta[i].aliq}">${risposta[i].aliq}%</option>`
+				t.innerHTML += nuple;
+			}
+		}
+
+		else if (tabella === 4) {
+			for (var i = 0; i < risposta.length; i++){
+				nuple = `<option value="${risposta[i].state}">${risposta[i].state}</option>`
+				t.innerHTML += nuple;
+			}
+		}
+
+		else if (tabella === 5) {
+			for (var i = 0; i < risposta.length; i++){
+				nuple = `<option value="${risposta[i].codice}">${risposta[i].codice}&#160;${risposta[i].descriz}</option>`
+				t.innerHTML += nuple;
+			}
+		}
+
+		else if (tabella === 6) {
+			for (var i = 0; i < risposta.length; i++){
+				nuple = `<option value="${risposta[i].stato}">${risposta[i].stato}</option>`
+				t.innerHTML += nuple;
+			}
+		}
+		else if (tabella === 7) {
+			for (var i = 0; i < risposta.length; i++){
+				nuple = `<option value="${risposta[i].nome}">${risposta[i].nome}</option>`
+				t.innerHTML += nuple;
+			}
+		}
+		else if (tabella === 8) {
+			for (var i = 0; i < 3; i++){
+				nuple = `<td>${risposta[i].codice}</td>
+								 <td>${risposta[i].QV}</td>
+								 <td>${risposta[i].RIC}€</td>`
+				t.innerHTML += nuple;
+			}
+		}
+		else if (tabella === 9) {
+			for (var i = 0; i < 3; i++){
+				nuple = `<td>${risposta[i].codice}</td>
+								 <td>${risposta[i].QV}</td>`
+				t.innerHTML += nuple;
+			}
+		}
+		else if (tabella === 10) {
+			t.innerHTML = "";
+			for (var i = 0; i < risposta.length; i++){
+			nuple = `<tr>
+							<td>${risposta[i].codice}</td>
+							<td>${risposta[i].descriz}</td>
+							<td>${risposta[i].prezunit}€</td>
+							<td>${risposta[i].quantita}</td>
+							<td>${risposta[i].categoria}</td>
+							<td>${risposta[i].aliq}%</td>
+							<td><button type="button" value="${risposta[i].id}" id="modi" class="mod" onclick="modifica(${risposta[i].id}, 2, 'prodotti')">Modifica</button><button value="${risposta[i].id}" id="elimi" class="elim" onclick="elimina(${risposta[i].id}, 'prodotti', 2, 'prodotti')" type="button">Elimina</button></td>
+					  </tr>`
+				t.innerHTML += nuple;
+			}
+		}
+		else if (tabella === 11) {
+			t.innerHTML = "";
+			for (var i = 0; i < risposta.length; i++){
+			nuple = `<tr>
+							<td>${risposta[i].codice}</td>
+							<td>${risposta[i].quantven}</td>
+							<td>${risposta[i].nomeimp}</td>
+							<td>${risposta[i].data}</td>
+							<td>${risposta[i].ora}</td>
+							<td>${risposta[i].cliente}</td>
+							<td>${risposta[i].status}</td>
+							<td><button type="button" value="${risposta[i].id}" id="modi" class="mod" onclick="modifica(${risposta[i].id}, 1, 'vendite', 2)">Modifica</button><button value="${risposta[i].id}" id="elimi" class="elim" onclick="elimina(${risposta[i].id}, 'vendite',  3, 'vendite')" type="button">Elimina</button></td>
+					  </tr>`
+				t.innerHTML += nuple;
+			}
+		}
+		else if (tabella === 12) {
+			t.innerHTML = "";
+			for (var i = 0; i < risposta.length; i++){
+			nuple = `<tr>
+							<td>${risposta[i].nome}</td>
+							<td>${risposta[i].piva}</td>
+							<td>${risposta[i].paese}</td>
+							<td>${risposta[i].citt}</td>
+							<td>${risposta[i].indir}</td>
+							<td>${risposta[i].civix}</td>
+							<td>${risposta[i].tel}</td>
+							<td>${risposta[i].email}</td>
+							<td><button type="button" value="${risposta[i].id}" id="modi" class="mod" onclick="modifica(${risposta[i].id}, 3, 'clienti')">Modifica</button><button value="${risposta[i].id}" id="elimi" class="elim" onclick="elimina(${risposta[i].id}, 'clienti', 4, 'clienti')" type="button">Elimina</button></td>
+					  </tr>`
+				t.innerHTML += nuple;
+			}
+		}
+		else if (tabella === 13) {
+			t.innerHTML = "";
+			for (var i = 0; i < risposta.length; i++){
+				nuple = `<tr><td>${risposta[i].categoria}</td>
+								 <td><button type="button" value="${risposta[i].rowid}" id="modi" class="mod" onclick="modifica(${risposta[i].rowid}, 4, 'categorie')">Modifica</button><button value="${risposta[i].rowid}" id="elimi" class="elim" onclick="elimina(${risposta[i].rowid}, 'categorie', 5, 'categorie')" type="button">Elimina</button></td></tr>`
+				t.innerHTML += nuple;
+			}
+		}
+		else if (tabella === 14) {
+			t.innerHTML = "";
+			for (var i = 0; i < risposta.length; i++){
+				nuple = `<tr><td>${risposta[i].state}</td>
+								 <td><button type="button" value="${risposta[i].rowid}" id="modi" class="mod" onclick="modifica(${risposta[i].rowid}, 7, 'status')">Modifica</button><button value="${risposta[i].rowid}" id="elimi" class="elim" onclick="elimina(${risposta[i].rowid}, 'status', 8, 'status')" type="button">Elimina</button></td></tr>`
+				t.innerHTML += nuple;
+			}
+		}
+		else if (tabella === 15) {
+			t.innerHTML = "";
+			for (var i = 0; i < risposta.length; i++){
+				nuple = `<tr><td>${risposta[i].stato}</td>
+								 <td><button type="button" value="${risposta[i].rowid}" id="modi" class="mod" onclick="modifica(${risposta[i].rowid}, 5, 'paesi')">Modifica</button><button value="${risposta[i].rowid}" id="elimi" class="elim" onclick="elimina(${risposta[i].rowid}, 'paesi', 6, 'paesi')" type="button">Elimina</button></td></tr>`
+				t.innerHTML += nuple;
+			}
+		}
+		else if (tabella === 16) {
+			t.innerHTML = "";
+			for (var i = 0; i < risposta.length; i++){
+				nuple = `<tr><td>${risposta[i].aliq}%</td>
+								 <td><button type="button" value="${risposta[i].rowid}" id="modi" class="mod" onclick="modifica(${risposta[i].rowid}, 6, 'aliquote')">Modifica</button><button value="${risposta[i].rowid}" id="elimi" class="elim" onclick="elimina(${risposta[i].rowid}, 'aliquote', 7, 'aliquote')" type="button">Elimina</button></td></tr>`
+				t.innerHTML += nuple;
+			}
+		}
+		else if (tabella === 17) {
+			t.innerHTML = "";
+			for (var i = 0; i < risposta.length; i++){
+				nuple = `<tr><td>${risposta[i].username}</td>
+								<td>*****</td>
+								<td>${risposta[i].nome}</td>
+								<td>${risposta[i].cogn}</td>
+								 <td><button type="button" value="${risposta[i].id}" id="modi" class="mod" onclick="modifica(${risposta[i].id}, 8, 'utenti')">Modifica</button><button value="${risposta[i].id}" id="elimi" class="elim" onclick="elimina(${risposta[i].id}, 'utenti', 9, 'utenti')" type="button">Elimina</button></td></tr>`
+				t.innerHTML += nuple;
+			}
+		}
+
+		else if (tabella === 18) {
+					imp = risposta[0].nome;
+					let dip = `Ciao ${imp}`
+					t.innerHTML += dip;
+		}
+		else if (tabella === 19) {
+			return risposta;
+		}
+		else if (tabella === 20) {
+			for (var i = 0; i < risposta.length; i++){
+				nuple = `<option value="${risposta[i].categoria}">${risposta[i].categoria}</option>`
+				t.innerHTML += nuple;
+			}
+		}
+	}
+
+	function logout() {
+	  richiesteClient("", "", "5", "", "principale");
+
+		token = 0;
+		esisteToken();
+	}
+
+	function cambiaSelezione() {
+		var seleziona = document.getElementById("tabella");
+    var valoreSelez = seleziona.options[seleziona.selectedIndex].value;
+    var opz;
+		console.log("Selected " + valoreSelez);
+
+		if (valoreSelez === "categorie") {
+			testoDinamico("inserimento", singole);
+		}
+
+		else if (valoreSelez === "status") {
+			testoDinamico("inserimento", singole);
+		}
+		else if (valoreSelez === "paesi") {
+			testoDinamico("inserimento", singole);
+		}
+		else if (valoreSelez === "aliquote") {
+			testoDinamico("inserimento", singole);
+		}
+		else	if (valoreSelez === "prodotti") {
+			testoDinamico("inserimento", prodotti);
+			richiesteClient("aliquote ORDER BY aliq DESC", "*", "4", 3, "aliq");
+			richiesteClient("categorie", "categoria", "4", 20, "categoria");
+		}
+		else	if (valoreSelez === "vendite") {
+			testoDinamico("inserimento", vendite);
+			richiesteClient("status", "*", "4", 4, "status");
+			richiesteClient("prodotti", "*", "4", 5, "codice");
+			richiesteClient("clienti", "nome", "4", 7, "cliente");
+
+
+		}
+		else	if (valoreSelez === "clienti") {
+			testoDinamico("inserimento", clienti);
+			richiesteClient("paesi", "stato", "4", 6, "paese");
+		}
+		else	if (valoreSelez === "utenti") {
+			testoDinamico("inserimento", utenti);
+		}
+	}
+
+	window.onload = esisteToken();
+</script>
+</html>
